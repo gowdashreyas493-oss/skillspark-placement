@@ -14,7 +14,337 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessment_attempts: {
+        Row: {
+          assessment_id: string
+          completed_at: string | null
+          feedback: string | null
+          id: string
+          percentage: number | null
+          score: number | null
+          started_at: string | null
+          student_id: string
+          total_marks: number | null
+        }
+        Insert: {
+          assessment_id: string
+          completed_at?: string | null
+          feedback?: string | null
+          id?: string
+          percentage?: number | null
+          score?: number | null
+          started_at?: string | null
+          student_id: string
+          total_marks?: number | null
+        }
+        Update: {
+          assessment_id?: string
+          completed_at?: string | null
+          feedback?: string | null
+          id?: string
+          percentage?: number | null
+          score?: number | null
+          started_at?: string | null
+          student_id?: string
+          total_marks?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_attempts_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_attempts_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "student_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessments: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          is_active: boolean | null
+          title: string
+          total_marks: number | null
+          type: Database["public"]["Enums"]["assessment_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          title: string
+          total_marks?: number | null
+          type: Database["public"]["Enums"]["assessment_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          title?: string
+          total_marks?: number | null
+          type?: Database["public"]["Enums"]["assessment_type"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          industry: string | null
+          logo_url: string | null
+          name: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      placement_drives: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          created_by: string | null
+          deadline: string | null
+          description: string | null
+          drive_date: string | null
+          eligible_branches: string[] | null
+          id: string
+          is_active: boolean | null
+          min_cgpa: number | null
+          package_offered: number | null
+          role: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          drive_date?: string | null
+          eligible_branches?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          min_cgpa?: number | null
+          package_offered?: number | null
+          role: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          deadline?: string | null
+          description?: string | null
+          drive_date?: string | null
+          eligible_branches?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          min_cgpa?: number | null
+          package_offered?: number | null
+          role?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "placement_drives_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "placement_drives_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      student_applications: {
+        Row: {
+          applied_at: string | null
+          drive_id: string
+          id: string
+          notes: string | null
+          status: Database["public"]["Enums"]["placement_status"] | null
+          student_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          applied_at?: string | null
+          drive_id: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["placement_status"] | null
+          student_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          applied_at?: string | null
+          drive_id?: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["placement_status"] | null
+          student_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_applications_drive_id_fkey"
+            columns: ["drive_id"]
+            isOneToOne: false
+            referencedRelation: "placement_drives"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_applications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "student_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_profiles: {
+        Row: {
+          batch_year: number
+          branch: string
+          certifications: Json | null
+          cgpa: number | null
+          created_at: string | null
+          github_url: string | null
+          id: string
+          linkedin_url: string | null
+          resume_url: string | null
+          roll_number: string
+          skills: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          batch_year: number
+          branch: string
+          certifications?: Json | null
+          cgpa?: number | null
+          created_at?: string | null
+          github_url?: string | null
+          id?: string
+          linkedin_url?: string | null
+          resume_url?: string | null
+          roll_number: string
+          skills?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          batch_year?: number
+          branch?: string
+          certifications?: Json | null
+          cgpa?: number | null
+          created_at?: string | null
+          github_url?: string | null
+          id?: string
+          linkedin_url?: string | null
+          resume_url?: string | null
+          roll_number?: string
+          skills?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +353,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      assessment_type: "mock_interview" | "aptitude_test" | "coding_challenge"
+      placement_status:
+        | "eligible"
+        | "applied"
+        | "shortlisted"
+        | "selected"
+        | "rejected"
+        | "not_eligible"
+      user_role: "student" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +488,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      assessment_type: ["mock_interview", "aptitude_test", "coding_challenge"],
+      placement_status: [
+        "eligible",
+        "applied",
+        "shortlisted",
+        "selected",
+        "rejected",
+        "not_eligible",
+      ],
+      user_role: ["student", "admin"],
+    },
   },
 } as const
