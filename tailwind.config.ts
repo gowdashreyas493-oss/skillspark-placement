@@ -47,6 +47,10 @@ export default {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -126,11 +130,14 @@ export default {
       },
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
+        "gradient-secondary": "var(--gradient-secondary)",
+        "gradient-success": "var(--gradient-success)",
         "gradient-hero": "var(--gradient-hero)",
         "gradient-card": "var(--gradient-card)",
       },
       boxShadow: {
         "glow": "var(--shadow-glow)",
+        "glow-lg": "var(--shadow-glow-lg)",
       },
     },
   },
