@@ -37,7 +37,15 @@ const Dashboard = () => {
         .eq("id", session.user.id)
         .single();
 
-      setProfile(profileData);
+      // Get user role from user_roles table (secure)
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .single();
+
+      const fullProfile = { ...profileData, role: roleData?.role || 'student' };
+      setProfile(fullProfile);
 
       // Fetch stats
       const { count: drivesCount } = await supabase
@@ -54,7 +62,7 @@ const Dashboard = () => {
         .select("*", { count: "exact", head: true })
         .eq("is_active", true);
 
-      if (profileData?.role === "student") {
+      if (roleData?.role === "student") {
         const { data: studentProfile } = await supabase
           .from("student_profiles")
           .select("id")
