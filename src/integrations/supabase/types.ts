@@ -14,6 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          message: string
+          priority: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          message: string
+          priority?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string
+          priority?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      aptitude_test_questions: {
+        Row: {
+          category: string
+          correct_answer: string
+          created_at: string | null
+          difficulty: string
+          id: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+        }
+        Insert: {
+          category: string
+          correct_answer: string
+          created_at?: string | null
+          difficulty: string
+          id?: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+        }
+        Update: {
+          category?: string
+          correct_answer?: string
+          created_at?: string | null
+          difficulty?: string
+          id?: string
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          question?: string
+        }
+        Relationships: []
+      }
+      aptitude_test_results: {
+        Row: {
+          accuracy: number | null
+          category: string
+          completed_at: string | null
+          id: string
+          rank: number | null
+          score: number | null
+          student_id: string
+          time_taken: number | null
+          total_questions: number | null
+        }
+        Insert: {
+          accuracy?: number | null
+          category: string
+          completed_at?: string | null
+          id?: string
+          rank?: number | null
+          score?: number | null
+          student_id: string
+          time_taken?: number | null
+          total_questions?: number | null
+        }
+        Update: {
+          accuracy?: number | null
+          category?: string
+          completed_at?: string | null
+          id?: string
+          rank?: number | null
+          score?: number | null
+          student_id?: string
+          time_taken?: number | null
+          total_questions?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aptitude_test_results_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "student_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_attempts: {
         Row: {
           assessment_id: string
@@ -112,6 +225,44 @@ export type Database = {
           },
         ]
       }
+      code_submissions: {
+        Row: {
+          code: string
+          id: string
+          language: string
+          output: string | null
+          status: string | null
+          student_id: string
+          submitted_at: string | null
+        }
+        Insert: {
+          code: string
+          id?: string
+          language: string
+          output?: string | null
+          status?: string | null
+          student_id: string
+          submitted_at?: string | null
+        }
+        Update: {
+          code?: string
+          id?: string
+          language?: string
+          output?: string | null
+          status?: string | null
+          student_id?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "code_submissions_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "student_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -144,6 +295,71 @@ export type Database = {
           website?: string | null
         }
         Relationships: []
+      }
+      mock_interview_questions: {
+        Row: {
+          created_at: string | null
+          difficulty: string
+          domain: string
+          expected_answer: string | null
+          id: string
+          question: string
+        }
+        Insert: {
+          created_at?: string | null
+          difficulty: string
+          domain: string
+          expected_answer?: string | null
+          id?: string
+          question: string
+        }
+        Update: {
+          created_at?: string | null
+          difficulty?: string
+          domain?: string
+          expected_answer?: string | null
+          id?: string
+          question?: string
+        }
+        Relationships: []
+      }
+      mock_interview_results: {
+        Row: {
+          completed_at: string | null
+          domain: string
+          feedback: string | null
+          id: string
+          score: number | null
+          student_id: string
+          total_questions: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          domain: string
+          feedback?: string | null
+          id?: string
+          score?: number | null
+          student_id: string
+          total_questions?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          domain?: string
+          feedback?: string | null
+          id?: string
+          score?: number | null
+          student_id?: string
+          total_questions?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_interview_results_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "student_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       placement_drives: {
         Row: {

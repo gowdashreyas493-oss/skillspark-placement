@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, LogOut, GraduationCap, Building2, FileText, TrendingUp, Users, Calendar, BarChart3 } from "lucide-react";
+import { Trophy, LogOut, GraduationCap, Building2, FileText, TrendingUp, Users, Calendar, BarChart3, Brain, Target, Code2, User, Megaphone } from "lucide-react";
 import { toast } from "sonner";
 
 const Dashboard = () => {
@@ -267,6 +267,96 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-info/20 bg-gradient-card"
+              onClick={() => navigate("/student/mock-interview")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-info flex items-center justify-center shadow-glow mb-4">
+                  <Brain className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Mock Interview</CardTitle>
+                <CardDescription>Practice interview skills</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-info shadow-lg hover:shadow-glow">
+                  Start Interview
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-gradient-card"
+              onClick={() => navigate("/student/aptitude-test")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow mb-4">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Aptitude Test</CardTitle>
+                <CardDescription>Test your aptitude skills</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-gradient-primary shadow-lg hover:shadow-glow">
+                  Take Test
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-secondary/20 bg-gradient-card"
+              onClick={() => navigate("/student/code-compiler")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-gradient-secondary flex items-center justify-center shadow-glow mb-4">
+                  <Code2 className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Code Compiler</CardTitle>
+                <CardDescription>Write and run code</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-gradient-secondary shadow-lg hover:shadow-glow">
+                  Open Compiler
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-success/20 bg-gradient-card"
+              onClick={() => navigate("/student/performance")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-gradient-success flex items-center justify-center shadow-glow mb-4">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Performance</CardTitle>
+                <CardDescription>View analytics & reports</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-gradient-success shadow-lg hover:shadow-glow">
+                  View Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-info/20 bg-gradient-card"
+              onClick={() => navigate("/student/profile")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-info flex items-center justify-center shadow-glow mb-4">
+                  <User className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>My Profile</CardTitle>
+                <CardDescription>Update your details</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-info shadow-lg hover:shadow-glow">
+                  Edit Profile
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
@@ -320,6 +410,42 @@ const Dashboard = () => {
               <CardContent>
                 <Button className="w-full bg-gradient-success shadow-lg hover:shadow-glow">
                   View Applications
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-info/20 bg-gradient-card"
+              onClick={() => navigate("/admin/assessments")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-info flex items-center justify-center shadow-glow mb-4">
+                  <GraduationCap className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Assessments</CardTitle>
+                <CardDescription>Manage tests & questions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-info shadow-lg hover:shadow-glow">
+                  Manage Tests
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-gradient-card"
+              onClick={() => navigate("/admin/announcements")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow mb-4">
+                  <Megaphone className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Announcements</CardTitle>
+                <CardDescription>Send notifications to students</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-gradient-primary shadow-lg hover:shadow-glow">
+                  Manage Announcements
                 </Button>
               </CardContent>
             </Card>
