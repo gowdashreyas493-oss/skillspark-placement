@@ -10,6 +10,15 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Megaphone, Plus, Trash2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const announcementSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(200, "Title must be less than 200 characters"),
+  message: z.string().trim().min(1, "Message is required").max(5000, "Message must be less than 5000 characters"),
+  priority: z.enum(["normal", "medium", "high"], {
+    errorMap: () => ({ message: "Invalid priority level" })
+  })
+});
 
 export default function Announcements() {
   const navigate = useNavigate();
@@ -44,13 +53,20 @@ export default function Announcements() {
 
   const handleCreate = async () => {
     try {
+      // Validate input data
+      const validation = announcementSchema.safeParse(formData);
+      if (!validation.success) {
+        toast.error(validation.error.errors[0].message);
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase.from("announcements").insert({
-        ...formData,
+      const { error } = await supabase.from("announcements").insert([{
+        ...validation.data,
         created_by: user.id
-      });
+      } as any]);
 
       if (error) throw error;
 

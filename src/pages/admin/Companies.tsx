@@ -9,6 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Building2, ArrowLeft, Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const companySchema = z.object({
+  name: z.string().trim().min(1, "Company name is required").max(200, "Company name must be less than 200 characters"),
+  description: z.string().trim().max(2000, "Description must be less than 2000 characters"),
+  industry: z.string().trim().max(100, "Industry must be less than 100 characters"),
+  website: z.string().trim().refine((val) => !val || z.string().url().safeParse(val).success, "Invalid website URL"),
+  logo_url: z.string().trim().refine((val) => !val || z.string().url().safeParse(val).success, "Invalid logo URL")
+});
 
 const Companies = () => {
   const navigate = useNavigate();
@@ -57,13 +66,22 @@ const Companies = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const companyData = {
+    const rawData = {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       industry: formData.get("industry") as string,
       website: formData.get("website") as string,
       logo_url: formData.get("logo_url") as string,
     };
+
+    // Validate input data
+    const validation = companySchema.safeParse(rawData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
+    const companyData = validation.data;
 
     if (editingCompany) {
       const { error } = await supabase
@@ -82,7 +100,7 @@ const Companies = () => {
     } else {
       const { error } = await supabase
         .from("companies")
-        .insert(companyData);
+        .insert([companyData as any]);
 
       if (error) {
         toast.error("Failed to create company");

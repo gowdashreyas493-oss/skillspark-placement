@@ -10,6 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FileText, ArrowLeft, Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const assessmentSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(200, "Title must be less than 200 characters"),
+  description: z.string().trim().max(2000, "Description must be less than 2000 characters"),
+  type: z.enum(["aptitude_test", "coding_challenge", "mock_interview"], {
+    errorMap: () => ({ message: "Invalid assessment type" })
+  }),
+  duration_minutes: z.number().int("Duration must be a whole number").min(1, "Duration must be at least 1 minute").max(999, "Duration is too large"),
+  total_marks: z.number().int("Total marks must be a whole number").min(1, "Total marks must be at least 1").max(9999, "Total marks is too large"),
+  is_active: z.boolean()
+});
 
 const ManageAssessments = () => {
   const navigate = useNavigate();
@@ -58,14 +70,36 @@ const ManageAssessments = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const assessmentData = {
+    const durationValue = parseInt(formData.get("duration_minutes") as string);
+    const marksValue = parseInt(formData.get("total_marks") as string);
+
+    // Validate numeric values
+    if (isNaN(durationValue)) {
+      toast.error("Invalid duration value");
+      return;
+    }
+    if (isNaN(marksValue)) {
+      toast.error("Invalid total marks value");
+      return;
+    }
+
+    const rawData = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       type: formData.get("type") as "aptitude_test" | "coding_challenge" | "mock_interview",
-      duration_minutes: parseInt(formData.get("duration_minutes") as string),
-      total_marks: parseInt(formData.get("total_marks") as string),
+      duration_minutes: durationValue,
+      total_marks: marksValue,
       is_active: formData.get("is_active") === "true",
     };
+
+    // Validate input data
+    const validation = assessmentSchema.safeParse(rawData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
+    const assessmentData = validation.data;
 
     if (editingAssessment) {
       const { error } = await supabase
@@ -84,7 +118,7 @@ const ManageAssessments = () => {
     } else {
       const { error } = await supabase
         .from("assessments")
-        .insert(assessmentData);
+        .insert([assessmentData as any]);
 
       if (error) {
         toast.error("Failed to create assessment");

@@ -10,6 +10,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Briefcase, ArrowLeft, Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const driveSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(200, "Title must be less than 200 characters"),
+  description: z.string().trim().max(2000, "Description must be less than 2000 characters"),
+  company_id: z.string().uuid("Invalid company selection"),
+  role: z.string().trim().min(1, "Role is required").max(100, "Role must be less than 100 characters"),
+  package_offered: z.number().min(0, "Package must be positive").max(999, "Package value is too large"),
+  min_cgpa: z.number().min(0, "CGPA must be between 0 and 10").max(10, "CGPA must be between 0 and 10"),
+  drive_date: z.string().min(1, "Drive date is required"),
+  deadline: z.string().min(1, "Deadline is required"),
+  eligible_branches: z.array(z.string().trim().min(1).max(50)).min(1, "At least one branch is required"),
+  is_active: z.boolean()
+});
 
 const ManageDrives = () => {
   const navigate = useNavigate();
@@ -60,18 +74,45 @@ const ManageDrives = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const driveData = {
+    const packageValue = parseFloat(formData.get("package_offered") as string);
+    const cgpaValue = parseFloat(formData.get("min_cgpa") as string);
+    
+    // Validate numeric values
+    if (isNaN(packageValue)) {
+      toast.error("Invalid package value");
+      return;
+    }
+    if (isNaN(cgpaValue)) {
+      toast.error("Invalid CGPA value");
+      return;
+    }
+
+    const branches = (formData.get("eligible_branches") as string)
+      .split(",")
+      .map(b => b.trim())
+      .filter(b => b.length > 0);
+
+    const rawData = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       company_id: formData.get("company_id") as string,
       role: formData.get("role") as string,
-      package_offered: parseFloat(formData.get("package_offered") as string),
-      min_cgpa: parseFloat(formData.get("min_cgpa") as string),
+      package_offered: packageValue,
+      min_cgpa: cgpaValue,
       drive_date: formData.get("drive_date") as string,
       deadline: formData.get("deadline") as string,
-      eligible_branches: (formData.get("eligible_branches") as string).split(",").map(b => b.trim()),
+      eligible_branches: branches,
       is_active: formData.get("is_active") === "true",
     };
+
+    // Validate input data
+    const validation = driveSchema.safeParse(rawData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
+    const driveData = validation.data;
 
     if (editingDrive) {
       const { error } = await supabase
@@ -90,7 +131,7 @@ const ManageDrives = () => {
     } else {
       const { error } = await supabase
         .from("placement_drives")
-        .insert(driveData);
+        .insert([driveData as any]);
 
       if (error) {
         toast.error("Failed to create drive");
