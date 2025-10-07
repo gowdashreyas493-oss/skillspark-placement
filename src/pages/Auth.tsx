@@ -42,7 +42,7 @@ const Auth = () => {
       if (error) throw error;
 
       toast.success("Account created successfully!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -68,7 +68,7 @@ const Auth = () => {
       if (error) throw error;
 
       toast.success("Signed in successfully!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error: any) {
       setError(error.message);
     } finally {
