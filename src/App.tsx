@@ -19,6 +19,8 @@ import ManageDrives from "./pages/admin/ManageDrives";
 import ManageAssessments from "./pages/admin/ManageAssessments";
 import ViewApplications from "./pages/admin/ViewApplications";
 import Announcements from "./pages/admin/Announcements";
+import MessagingAnalytics from "./pages/admin/MessagingAnalytics";
+import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,8 @@ const App = () => (
           <Route path="/admin/assessments" element={<ManageAssessments />} />
           <Route path="/admin/applications" element={<ViewApplications />} />
           <Route path="/admin/announcements" element={<Announcements />} />
+          <Route path="/admin/messaging-analytics" element={<MessagingAnalytics />} />
+          <Route path="/messages" element={<Messages />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
