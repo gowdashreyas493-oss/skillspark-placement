@@ -357,6 +357,24 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
+
+            <Card 
+              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-warning/20 bg-gradient-card"
+              onClick={() => navigate("/student/announcements")}
+            >
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-warning flex items-center justify-center shadow-glow mb-4">
+                  <Megaphone className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle>Announcements</CardTitle>
+                <CardDescription>View campus notifications</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-warning shadow-lg hover:shadow-glow">
+                  View Updates
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">

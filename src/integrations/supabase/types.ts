@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_message_analysis: {
+        Row: {
+          analyzed_at: string | null
+          credibility_score: number | null
+          fake_news_probability: number | null
+          flag_reason: string | null
+          id: string
+          is_flagged: boolean | null
+          message_id: string
+          sentiment_score: number | null
+          threat_level: string | null
+          toxicity_score: number | null
+        }
+        Insert: {
+          analyzed_at?: string | null
+          credibility_score?: number | null
+          fake_news_probability?: number | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          message_id: string
+          sentiment_score?: number | null
+          threat_level?: string | null
+          toxicity_score?: number | null
+        }
+        Update: {
+          analyzed_at?: string | null
+          credibility_score?: number | null
+          fake_news_probability?: number | null
+          flag_reason?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          message_id?: string
+          sentiment_score?: number | null
+          threat_level?: string | null
+          toxicity_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_message_analysis_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: true
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       announcements: {
         Row: {
           created_at: string | null
@@ -225,6 +272,68 @@ export type Database = {
           },
         ]
       }
+      chat_participants: {
+        Row: {
+          chat_id: string
+          id: string
+          is_muted: boolean | null
+          joined_at: string | null
+          last_read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          chat_id: string
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string | null
+          last_read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          chat_id?: string
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string | null
+          last_read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_participants_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chats: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string
+          name: string | null
+          type: Database["public"]["Enums"]["chat_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          name?: string | null
+          type?: Database["public"]["Enums"]["chat_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          name?: string | null
+          type?: Database["public"]["Enums"]["chat_type"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       code_submissions: {
         Row: {
           code: string
@@ -295,6 +404,85 @@ export type Database = {
           website?: string | null
         }
         Relationships: []
+      }
+      message_reactions: {
+        Row: {
+          created_at: string | null
+          id: string
+          message_id: string
+          reaction: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message_id: string
+          reaction: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message_id?: string
+          reaction?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          chat_id: string
+          content: string
+          created_at: string | null
+          id: string
+          is_deleted: boolean | null
+          media_url: string | null
+          message_type: Database["public"]["Enums"]["message_type"] | null
+          sender_id: string
+          status: Database["public"]["Enums"]["message_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          chat_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          media_url?: string | null
+          message_type?: Database["public"]["Enums"]["message_type"] | null
+          sender_id: string
+          status?: Database["public"]["Enums"]["message_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          chat_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          media_url?: string | null
+          message_type?: Database["public"]["Enums"]["message_type"] | null
+          sender_id?: string
+          status?: Database["public"]["Enums"]["message_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mock_interview_questions: {
         Row: {
@@ -561,6 +749,38 @@ export type Database = {
           },
         ]
       }
+      typing_indicators: {
+        Row: {
+          chat_id: string
+          id: string
+          is_typing: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          chat_id: string
+          id?: string
+          is_typing?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          chat_id?: string
+          id?: string
+          is_typing?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "typing_indicators_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "chats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -587,6 +807,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_or_create_direct_chat: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: string
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
@@ -602,6 +826,9 @@ export type Database = {
     Enums: {
       app_role: "admin" | "student"
       assessment_type: "mock_interview" | "aptitude_test" | "coding_challenge"
+      chat_type: "direct" | "group"
+      message_status: "sent" | "delivered" | "read"
+      message_type: "text" | "image" | "document" | "video"
       placement_status:
         | "eligible"
         | "applied"
@@ -739,6 +966,9 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "student"],
       assessment_type: ["mock_interview", "aptitude_test", "coding_challenge"],
+      chat_type: ["direct", "group"],
+      message_status: ["sent", "delivered", "read"],
+      message_type: ["text", "image", "document", "video"],
       placement_status: [
         "eligible",
         "applied",
