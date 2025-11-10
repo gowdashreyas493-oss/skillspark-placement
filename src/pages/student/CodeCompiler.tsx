@@ -46,43 +46,55 @@ export default function CodeCompiler() {
   };
 
   const handleRunCode = async () => {
+    if (!code.trim()) {
+      toast.error("Please write some code first!");
+      return;
+    }
+
     setIsRunning(true);
     setOutput("Compiling and running code...");
 
     try {
-      // Simulate compilation and execution
-      // In production, you would integrate with JDoodle API or similar
-      setTimeout(async () => {
-        const mockOutput = `Successfully compiled and executed ${language} code:\n\nOutput:\nHello, World!\n\nProgram finished with exit code 0`;
-        setOutput(mockOutput);
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Call edge function to execute code
+      const { data, error } = await supabase.functions.invoke('execute-code', {
+        body: { language, code }
+      });
 
-        // Save code submission
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { data: studentProfile } = await supabase
-            .from("student_profiles")
-            .select("id")
-            .eq("user_id", user.id)
-            .single();
+      if (error) throw error;
 
-          if (studentProfile) {
-            await supabase.from("code_submissions").insert({
-              student_id: studentProfile.id,
-              language,
-              code,
-              output: mockOutput,
-              status: "success"
-            });
-          }
+      const executionOutput = data.output || "No output";
+      const fullOutput = `Language: ${language}\n${'='.repeat(50)}\n\nOutput:\n${executionOutput}\n\n${'='.repeat(50)}\nExecution Time: ${data.cpuTime || 'N/A'}\nMemory: ${data.memory || 'N/A'}`;
+      
+      setOutput(fullOutput);
+
+      // Save code submission
+      if (user) {
+        const { data: studentProfile } = await supabase
+          .from("student_profiles")
+          .select("id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (studentProfile) {
+          await supabase.from("code_submissions").insert({
+            student_id: studentProfile.id,
+            language,
+            code,
+            output: executionOutput,
+            status: data.statusCode === 200 ? "success" : "error"
+          });
         }
+      }
 
-        setIsRunning(false);
-        toast.success("Code executed successfully!");
-      }, 2000);
-    } catch (error) {
-      setOutput("Error: Failed to execute code");
       setIsRunning(false);
-      toast.error("Failed to execute code");
+      toast.success("Code executed successfully!");
+    } catch (error: any) {
+      const errorMsg = error.message || "Failed to execute code";
+      setOutput(`Error: ${errorMsg}`);
+      setIsRunning(false);
+      toast.error(errorMsg);
     }
   };
 

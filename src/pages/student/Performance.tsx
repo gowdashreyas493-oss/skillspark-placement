@@ -21,15 +21,23 @@ export default function Performance() {
   const fetchPerformanceData = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        toast.error("Please log in to view performance data");
+        setLoading(false);
+        return;
+      }
 
       const { data: studentProfile } = await supabase
         .from("student_profiles")
         .select("id")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
-      if (!studentProfile) return;
+      if (!studentProfile) {
+        toast.error("Student profile not found. Please complete your profile first.");
+        setLoading(false);
+        return;
+      }
 
       const [interviews, aptitude, code] = await Promise.all([
         supabase
@@ -53,6 +61,7 @@ export default function Performance() {
       setAptitudeResults(aptitude.data || []);
       setCodeSubmissions(code.data || []);
     } catch (error) {
+      console.error("Error fetching performance data:", error);
       toast.error("Failed to load performance data");
     } finally {
       setLoading(false);
