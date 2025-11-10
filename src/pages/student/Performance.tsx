@@ -97,11 +97,11 @@ export default function Performance() {
 
   const avgInterviewScore = interviewResults.length > 0
     ? (interviewResults.reduce((acc, r) => acc + (r.score || 0), 0) / interviewResults.length).toFixed(1)
-    : 0;
+    : "0";
 
   const avgAptitudeAccuracy = aptitudeResults.length > 0
     ? (aptitudeResults.reduce((acc, r) => acc + (r.accuracy || 0), 0) / aptitudeResults.length).toFixed(1)
-    : 0;
+    : "0";
 
   if (loading) {
     return (

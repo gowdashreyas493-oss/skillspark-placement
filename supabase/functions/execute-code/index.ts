@@ -12,41 +12,61 @@ serve(async (req) => {
 
   try {
     const { language, code } = await req.json();
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
-    // Map language names to JDoodle language IDs
-    const languageMap: Record<string, string> = {
-      python: 'python3',
-      c: 'c',
-      cpp: 'cpp17',
-      java: 'java',
-      javascript: 'nodejs'
-    };
+    if (!LOVABLE_API_KEY) {
+      throw new Error('LOVABLE_API_KEY is not configured');
+    }
 
-    const jdoodleLanguage = languageMap[language] || 'python3';
+    // Create a system prompt that asks the AI to execute the code and return the output
+    const systemPrompt = `You are a code execution assistant. The user will provide code in ${language}. 
+Your task is to analyze the code and provide what the output would be if executed.
+Return ONLY the output that the code would produce, without any explanations or additional text.
+If there's an error in the code, return the error message that would be shown.`;
 
-    // Use JDoodle API to compile and run code
-    const response = await fetch('https://api.jdoodle.com/v1/execute', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        clientId: Deno.env.get('JDOODLE_CLIENT_ID') || 'demo-client',
-        clientSecret: Deno.env.get('JDOODLE_CLIENT_SECRET') || 'demo-secret',
-        script: code,
-        language: jdoodleLanguage,
-        versionIndex: '0'
-      })
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `Execute this ${language} code and provide only the output:\n\n${code}` }
+        ],
+      }),
     });
 
-    const result = await response.json();
+    if (!response.ok) {
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "Rate limits exceeded. Please try again later." }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "Payment required. Please add funds to your Lovable AI workspace." }),
+          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      const errorText = await response.text();
+      console.error("AI gateway error:", response.status, errorText);
+      return new Response(
+        JSON.stringify({ error: "AI gateway error" }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const data = await response.json();
+    const output = data.choices[0].message.content;
 
     return new Response(
       JSON.stringify({
-        output: result.output || result.error || 'No output',
-        statusCode: result.statusCode,
-        memory: result.memory,
-        cpuTime: result.cpuTime
+        output: output,
+        statusCode: 200
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -55,6 +75,7 @@ serve(async (req) => {
     );
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error('Error in execute-code function:', errorMessage);
     return new Response(
       JSON.stringify({ error: errorMessage }),
       {

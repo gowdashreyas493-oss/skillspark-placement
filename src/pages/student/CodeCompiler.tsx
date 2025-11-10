@@ -65,7 +65,7 @@ export default function CodeCompiler() {
       if (error) throw error;
 
       const executionOutput = data.output || "No output";
-      const fullOutput = `Language: ${language}\n${'='.repeat(50)}\n\nOutput:\n${executionOutput}\n\n${'='.repeat(50)}\nExecution Time: ${data.cpuTime || 'N/A'}\nMemory: ${data.memory || 'N/A'}`;
+      const fullOutput = `Language: ${language}\n${'='.repeat(50)}\n\nOutput:\n${executionOutput}\n\n${'='.repeat(50)}`;
       
       setOutput(fullOutput);
 

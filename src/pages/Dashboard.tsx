@@ -154,59 +154,63 @@ const Dashboard = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="hover:shadow-glow transition-all duration-300 border-2 hover:border-primary/20 animate-scale-in bg-gradient-card">
+          <Card className="hover-lift hover:border-primary/30 animate-scale-in bg-gradient-card border-2 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Active Drives</CardTitle>
-              <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow">
-                <Building2 className="h-5 w-5 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow animate-pulse-glow">
+                <Building2 className="h-6 w-6 text-white" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">{stats.drives}</div>
-              <p className="text-xs text-muted-foreground">Open opportunities</p>
+              <div className="text-4xl font-bold gradient-text">{stats.drives}</div>
+              <p className="text-xs text-muted-foreground mt-1">Open opportunities</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-glow transition-all duration-300 border-2 hover:border-secondary/20 animate-scale-in bg-gradient-card" style={{ animationDelay: '0.1s' }}>
+          <Card className="hover-lift hover:border-secondary/30 animate-scale-in bg-gradient-card border-2 relative overflow-hidden group" style={{ animationDelay: '0.1s' }}>
+            <div className="absolute inset-0 bg-gradient-secondary opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
                 {profile?.role === "admin" ? "Total Applications" : "My Applications"}
               </CardTitle>
-              <div className="w-10 h-10 rounded-lg bg-gradient-secondary flex items-center justify-center shadow-glow">
-                <FileText className="h-5 w-5 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-secondary flex items-center justify-center shadow-glow animate-pulse-glow" style={{ animationDelay: '0.2s' }}>
+                <FileText className="h-6 w-6 text-white" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold bg-gradient-secondary bg-clip-text text-transparent">{stats.applications}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-4xl font-bold gradient-text">{stats.applications}</div>
+              <p className="text-xs text-muted-foreground mt-1">
                 {profile?.role === "admin" ? "From all students" : "Submitted"}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-glow transition-all duration-300 border-2 hover:border-success/20 animate-scale-in bg-gradient-card" style={{ animationDelay: '0.2s' }}>
+          <Card className="hover-lift hover:border-success/30 animate-scale-in bg-gradient-card border-2 relative overflow-hidden group" style={{ animationDelay: '0.2s' }}>
+            <div className="absolute inset-0 bg-gradient-success opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Assessments</CardTitle>
-              <div className="w-10 h-10 rounded-lg bg-gradient-success flex items-center justify-center shadow-glow">
-                <GraduationCap className="h-5 w-5 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-success flex items-center justify-center shadow-glow animate-pulse-glow" style={{ animationDelay: '0.4s' }}>
+                <GraduationCap className="h-6 w-6 text-white" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold bg-gradient-success bg-clip-text text-transparent">{stats.assessments}</div>
-              <p className="text-xs text-muted-foreground">Available tests</p>
+              <div className="text-4xl font-bold gradient-text">{stats.assessments}</div>
+              <p className="text-xs text-muted-foreground mt-1">Available tests</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-glow transition-all duration-300 border-2 hover:border-info/20 animate-scale-in bg-gradient-card" style={{ animationDelay: '0.3s' }}>
+          <Card className="hover-lift hover:border-info/30 animate-scale-in bg-gradient-card border-2 relative overflow-hidden group" style={{ animationDelay: '0.3s' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-info/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Companies</CardTitle>
-              <div className="w-10 h-10 rounded-lg bg-info flex items-center justify-center shadow-glow">
-                <TrendingUp className="h-5 w-5 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-info flex items-center justify-center shadow-glow animate-pulse-glow" style={{ animationDelay: '0.6s' }}>
+                <TrendingUp className="h-6 w-6 text-white" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-info">{stats.companies}</div>
-              <p className="text-xs text-muted-foreground">Recruiting now</p>
+              <div className="text-4xl font-bold text-info">{stats.companies}</div>
+              <p className="text-xs text-muted-foreground mt-1">Recruiting now</p>
             </CardContent>
           </Card>
         </div>
@@ -215,18 +219,19 @@ const Dashboard = () => {
         {profile?.role === "student" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
             <Card 
-              className="hover:shadow-glow-lg transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-gradient-card"
+              className="hover-lift cursor-pointer border-2 hover:border-primary/30 bg-gradient-card relative overflow-hidden group"
               onClick={() => navigate("/student/drives")}
             >
+              <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
               <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow mb-4">
-                  <Building2 className="w-6 h-6 text-white" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow mb-4 group-hover:scale-110 transition-transform duration-300 animate-float">
+                  <Building2 className="w-7 h-7 text-white" />
                 </div>
-                <CardTitle>Placement Drives</CardTitle>
+                <CardTitle className="text-lg">Placement Drives</CardTitle>
                 <CardDescription>Browse and apply to open positions</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button className="w-full bg-gradient-primary shadow-lg hover:shadow-glow">
+                <Button className="w-full bg-gradient-primary shadow-lg hover:shadow-glow hover:scale-105 transition-transform">
                   Explore Drives
                 </Button>
               </CardContent>
