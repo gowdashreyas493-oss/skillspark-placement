@@ -1,24 +1,295 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PlacementPro - Student Placement Tracker & Management System</title>
-    <meta name="description" content="Enterprise-grade placement management platform for colleges. Track placements, manage student profiles, conduct mock assessments, and analyze performance with real-time analytics." />
-    <meta name="author" content="PlacementPro" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chandana • Enterprise Onboarding</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- MAIN LOGIN SCREEN -->
+  <div id="main-login-screen" class="login-screen">
+    <div class="login-card login-card-large">
+      <img class="login-logo" src="https://placehold.co/72x72/0f62fe/ffffff?text=C" alt="Chandana" />
+      <h2>Chandana • Enterprise Onboarding</h2>
+      <p class="muted">Select your action</p>
 
-    <meta property="og:title" content="PlacementPro - Student Placement Tracker & Management System" />
-    <meta property="og:description" content="Comprehensive placement management system with integrated assessments, analytics, and tracking for 150+ students and 20+ institutions." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+      <div class="login-selector">
+        <button id="show-admin-login" class="selector-btn">
+          <div class="selector-icon" style="background: linear-gradient(135deg, #0f62fe, #0353e9)">👨‍💼</div>
+          <h3>Admin Login</h3>
+          <p>Full system access</p>
+        </button>
+        <button id="show-employee-login" class="selector-btn">
+          <div class="selector-icon" style="background: linear-gradient(135deg, #00bcd4, #00acc1)">👤</div>
+          <h3>Employee Login</h3>
+          <p>Employee portal</p>
+        </button>
+        <button id="show-register" class="selector-btn">
+          <div class="selector-icon" style="background: linear-gradient(135deg, #4ade80, #22c55e)">📝</div>
+          <h3>New Registration</h3>
+          <p>Create account</p>
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+  <!-- ADMIN LOGIN -->
+  <div id="admin-login-screen" class="login-screen hidden">
+    <div class="login-card">
+      <img class="login-logo" src="https://placehold.co/72x72/0f62fe/ffffff?text=A" alt="Admin" />
+      <h2>Admin Login</h2>
+      <form id="admin-login-form" class="login-form">
+        <input name="username" placeholder="Username" required />
+        <input name="password" type="password" placeholder="Password" required />
+        <button class="btn btn-primary" type="submit">Login as Admin</button>
+      </form>
+      <div class="login-foot">
+        <button type="button" class="btn-link back-btn">← Back to Main</button>
+        <div class="muted small">Demo: admin / admin123</div>
+      </div>
+    </div>
+  </div>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- EMPLOYEE LOGIN -->
+  <div id="employee-login-screen" class="login-screen hidden">
+    <div class="login-card">
+      <img class="login-logo" src="https://placehold.co/72x72/00bcd4/ffffff?text=E" alt="Employee" />
+      <h2>Employee Login</h2>
+      <form id="employee-login-form" class="login-form">
+        <input name="username" placeholder="Username" required />
+        <input name="password" type="password" placeholder="Password" required />
+        <button class="btn btn-primary" type="submit">Login as Employee</button>
+      </form>
+      <div class="login-foot">
+        <button type="button" class="btn-link back-btn">← Back to Main</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION -->
+  <div id="register-screen" class="login-screen hidden">
+    <div class="login-card">
+      <img class="login-logo" src="https://placehold.co/72x72/4ade80/ffffff?text=R" alt="Register" />
+      <h2>New Registration</h2>
+      <p class="muted">Create your account</p>
+
+      <form id="register-form" class="login-form">
+        <input name="username" placeholder="Username" required />
+        <input name="full_name" placeholder="Full Name (optional)" />
+        <input name="email" type="email" placeholder="Email" required />
+        <input name="password" type="password" placeholder="Password" required />
+
+        <div class="role-selector">
+          <label class="radio-label">
+            <input type="radio" name="role" value="employee" checked />
+            <span>Employee</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="role" value="admin" />
+            <span>Admin</span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Register</button>
+      </form>
+      <div class="login-foot">
+        <button type="button" class="btn-link back-btn">← Back to Main</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="hidden">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <img class="brand-logo" src="https://placehold.co/72x72/0f62fe/ffffff?text=C" alt="Chandana" />
+        <div class="brand-text">
+          <div class="brand-main">Chandana</div>
+          <div class="brand-sub">Enterprise HR System</div>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="side-btn active" data-target="dash">📊 Dashboard</button>
+        <button class="side-btn admin-only" data-target="employees">👥 Employees</button>
+        <button class="side-btn employee-only" data-target="profile">👤 My Profile</button>
+        <button class="side-btn admin-only" data-target="training">📚 Training</button>
+        <button class="side-btn admin-only" data-target="salary">💰 Salary</button>
+        <button class="side-btn" data-target="leaves">🏖️ Leaves</button>
+        <button class="side-btn" data-target="chat">💬 Chatbot</button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div id="whoami" class="whoami">Loading...</div>
+        <button id="btn-logout" class="btn-ghost">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title-wrap">
+          <img class="top-badge" src="https://placehold.co/36x36/0f62fe/ffffff?text=C" alt="icon" />
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section id="dash" class="view active">
+        <div class="grid-cards">
+          <div class="card reveal admin-only">
+            <h3>📈 Quick Stats</h3>
+            <div class="card-body">
+              <div id="stat-employees" class="stat-item">Employees: —</div>
+              <div id="stat-trainings" class="stat-item">Trainings: —</div>
+              <div id="stat-leaves" class="stat-item">Total Leaves: —</div>
+              <div id="stat-pending" class="stat-item">Pending Leaves: —</div>
+            </div>
+          </div>
+
+          <div class="card reveal employee-only">
+            <h3>📈 My Stats</h3>
+            <div class="card-body">
+              <div id="stat-my-docs" class="stat-item">My Documents: —</div>
+              <div id="stat-my-leaves" class="stat-item">My Leaves: —</div>
+              <div id="stat-my-pending" class="stat-item">Pending Leaves: —</div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <h3>⚡ Quick Actions</h3>
+            <div class="card-body">
+              <button class="btn-outline admin-only" onclick="goTo('employees')">Add Employee</button>
+              <button class="btn-outline admin-only" onclick="goTo('training')">Create Training</button>
+              <button class="btn-outline employee-only" onclick="goTo('profile')">View My Profile</button>
+              <button class="btn-outline" onclick="goTo('leaves')">Apply Leave</button>
+              <button class="btn-outline" onclick="goTo('chat')">Ask AI Assistant</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPLOYEES (Admin) -->
+      <section id="employees" class="view">
+        <div class="pane">
+          <h2>👥 Employee Management</h2>
+          <form id="emp-form" class="form-inline admin-only">
+            <input name="name" placeholder="Full Name" required />
+            <input name="reg_no" placeholder="Registration No." required />
+            <input name="department" placeholder="Department" />
+            <input name="position" placeholder="Position" />
+            <button class="btn btn-primary">➕ Add Employee</button>
+          </form>
+          <div class="table-wrap">
+            <table id="employees-table" class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Reg No</th>
+                  <th>Department</th>
+                  <th>Position</th>
+                  <th>Documents</th>
+                  <th class="admin-only">Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Employee Documents Modal -->
+        <div id="emp-docs-modal" class="modal hidden">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 id="emp-docs-title">Employee Documents</h3>
+              <button class="btn-close" onclick="closeModal('emp-docs-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+              <ul id="emp-docs-list" class="list muted"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MY PROFILE (Employee) -->
+      <section id="profile" class="view">
+        <div class="pane">
+          <h2>👤 My Profile</h2>
+          <div id="my-profile-info" class="profile-grid"></div>
+          
+          <h3>📄 My Documents</h3>
+          <form id="my-upload-form" class="form-inline">
+            <input type="file" name="file" required />
+            <button class="btn btn-primary">⬆️ Upload Document</button>
+          </form>
+          <ul id="my-docs-list" class="list muted"></ul>
+        </div>
+      </section>
+
+      <!-- SALARY (Admin) -->
+      <section id="salary" class="view">
+        <div class="pane">
+          <h2>💰 Salary Management</h2>
+          <div class="salary-grid">
+            <select id="salary-employee-select">
+              <option value="">Select Employee</option>
+            </select>
+            <input id="salary-base" type="number" step="0.01" placeholder="Base Salary" />
+            <input id="salary-bonus" type="number" step="0.01" placeholder="Bonus" />
+            <input id="salary-deductions" type="number" step="0.01" placeholder="Deductions" />
+            <button id="salary-update" class="btn btn-primary admin-only">💾 Update Salary</button>
+            <div id="salary-net" class="salary-net"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEAVES -->
+      <section id="leaves" class="view">
+        <div class="pane">
+          <h2>🏖️ Leave Management</h2>
+          <form id="leave-form" class="form-inline">
+            <select id="leave-employee" class="admin-only">
+              <option value="">Select Employee</option>
+            </select>
+            <input name="start_date" type="date" required />
+            <input name="end_date" type="date" required />
+            <input name="reason" placeholder="Reason" style="flex: 2" />
+            <button class="btn btn-primary">📝 Apply Leave</button>
+          </form>
+          <div id="leaves-list" class="leaves-list"></div>
+        </div>
+      </section>
+
+      <!-- TRAINING (Admin) -->
+      <section id="training" class="view">
+        <div class="pane">
+          <h2>📚 Training Management</h2>
+          <form id="training-form" class="form-inline admin-only">
+            <input name="title" placeholder="Training Title" required style="flex: 2" />
+            <input name="department" placeholder="Department" />
+            <input name="position" placeholder="Position" />
+            <textarea name="description" placeholder="Description" style="flex: 3"></textarea>
+            <button class="btn btn-primary">➕ Create Training</button>
+          </form>
+          <div id="training-list" class="training-list"></div>
+        </div>
+      </section>
+
+      <!-- CHATBOT -->
+      <section id="chat" class="view">
+        <div class="pane">
+          <h2>💬 AI HR Assistant</h2>
+          <div id="chat-log" class="chat-log"></div>
+          <form id="chat-form" class="form-inline">
+            <input id="chat-input" placeholder="Ask about HR policies, onboarding, procedures..." style="flex: 1" />
+            <button class="btn btn-primary">📤 Send</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
 </html>
